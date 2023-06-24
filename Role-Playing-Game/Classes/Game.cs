@@ -109,7 +109,7 @@ namespace Role_Playing_Game.Classes
             _hero.SetArmour(_startArmour.ElementAt(armourIndex - 1));
             Console.WriteLine($"You choosed \"{_hero.Armour.Name}\" for your start armour");
             Console.WriteLine();
-            GetStatus(_hero);
+            GetStatus();
             Console.WriteLine();
         }
         public void MainMenu()
@@ -135,7 +135,7 @@ namespace Role_Playing_Game.Classes
                         FightMonsters();
                         break;
                     case 3: 
-                        GetStatus(_hero);
+                        GetStatus();
                         isValidInput = false;
                         MainMenu();
                         break;
@@ -172,6 +172,9 @@ namespace Role_Playing_Game.Classes
                 Console.WriteLine("STORE MENU");
                 Console.WriteLine("1. Shop weapons");
                 Console.WriteLine("2. Shop armours");
+                Console.WriteLine("3. Increase Base Strength (10 money)");
+                Console.WriteLine("4. Increase Base Defense (10 money)");
+                Console.WriteLine("5. Increase Current Health (10 money)");
                 Console.WriteLine("Press Enter to return to Main Menu");
                 int tempIndex;
                 bool isInput = false;
@@ -222,10 +225,11 @@ namespace Role_Playing_Game.Classes
                                         _hero.SetWeapon(_storeWeapons.ElementAt(storeWeapon - 1));
                                         Console.WriteLine($"You have equiped with new weapon {_storeWeapons.ElementAt(storeWeapon - 1).Name}");
                                         Console.WriteLine($"Now you have ${_hero.Money}");
+                                        StoreMenu();
                                     }
                                 }
                             }
-                        } 
+                        }
                         else if (tempIndex == 2)
                         {
                             int storeArmours;
@@ -262,9 +266,22 @@ namespace Role_Playing_Game.Classes
                                         _hero.SetArmour(_storeArmours.ElementAt(storeArmours - 1));
                                         Console.WriteLine($"You have equiped with new weapon {_storeArmours.ElementAt(storeArmours - 1).Name}");
                                         Console.WriteLine($"Now you have ${_hero.Money}");
+                                        StoreMenu();
                                     }
                                 }
                             }
+                        }
+                        else if (tempIndex == 3)
+                        {
+                            IncreaseBaseStrength();
+                        }
+                        else if (tempIndex == 4)
+                        {
+                            IncreaseBaseDefence();
+                        }
+                        else if (tempIndex == 5)
+                        {
+                            IncreaseCurrentHealth();
                         }
                         else
                         {
@@ -277,15 +294,16 @@ namespace Role_Playing_Game.Classes
             } while (!isExit);
             MainMenu();
         }
-        public void GetStatus(Hero hero)
+        public void GetStatus()
         {
             Console.WriteLine("Here is your hero status:");
-            Console.WriteLine($"Hero Name: {hero.Name}");
-            Console.WriteLine($"Hero Health: {hero.CurrentHealth}");
-            Console.WriteLine($"Hero Strength: {hero.BaseStrength}");
-            Console.WriteLine($"Hero Defence: {hero.BaseDefence}");
-            Console.WriteLine($"Hero Weapon: {hero.Weapon.Name}");
-            Console.WriteLine($"Hero Armour: {hero.Armour.Name}");
+            Console.WriteLine($"Hero Name: {_hero.Name}");
+            Console.WriteLine($"Hero Health: {_hero.CurrentHealth}");
+            Console.WriteLine($"Hero Strength: {_hero.BaseStrength}");
+            Console.WriteLine($"Hero Defence: {_hero.BaseDefence}");
+            Console.WriteLine($"Hero Weapon: {_hero.Weapon.Name}");
+            Console.WriteLine($"Hero Armour: {_hero.Armour.Name}");
+            Console.WriteLine($"Money: {_hero.Money}");
             Console.WriteLine();
             MainMenu();
         }
@@ -319,10 +337,8 @@ namespace Role_Playing_Game.Classes
             Monster monster = GetRandomMonster(tempMonsters);
             Console.WriteLine("Fight begins now:");
             Console.WriteLine();
-            Fight fight = new Fight();
-            fight.SetHero(_hero);
-            fight.SetMonster(monster);
-            if (!fight.Result(_hero, monster))
+            Fight fight = new Fight(_hero, monster);
+            if (!fight.Result())
             {
                 ResetMonster();
                 _hero.SetCurrentHealth(_hero.OriginalHealth);
@@ -331,9 +347,60 @@ namespace Role_Playing_Game.Classes
                 Console.WriteLine($"{_hero.Name} is Revivaled. Game restart.");
                 Console.WriteLine($"The monster has been reset.");
                 Console.WriteLine();
-                GetStatus(_hero);
+                GetStatus();
             }
             MainMenu();
+        }
+        private void IncreaseBaseStrength()
+        {
+            if (_hero.Money >= 10)
+            {
+                _hero.AddBaseStrength(10);
+                _hero.SetMoney(_hero.Money - 10);
+                Console.WriteLine("Base Strength increased by 10!");
+            }
+            else
+            {
+                Console.WriteLine("Not enough money to increase Base Strength!");
+            }
+            Console.WriteLine();
+            GetStatus();
+            Console.WriteLine();
+            StoreMenu();
+        }
+        private void IncreaseBaseDefence()
+        {
+            if (_hero.Money >= 10)
+            {
+                _hero.AddBaseDefence(10);
+                _hero.SetMoney(_hero.Money - 10);
+                Console.WriteLine("Base Defence increased by 10!");
+            }
+            else
+            {
+                Console.WriteLine("Not enough money to increase Base Strength!");
+            }
+            Console.WriteLine();
+            GetStatus();
+            Console.WriteLine();
+            StoreMenu();
+        }
+        private void IncreaseCurrentHealth()
+        {
+            if (_hero.Money >= 10)
+            {
+                _hero.SetCurrentHealth(_hero.CurrentHealth + 10);
+                _hero.SetMoney(_hero.Money - 10);
+                Console.WriteLine("Current Health increased by 10!");
+            }
+            else
+            {
+                Console.WriteLine("Not enough money to increase Current Health!");
+            }
+            Console.WriteLine();
+            GetStatus();
+            Console.WriteLine();
+            StoreMenu();
         }
     }
 }

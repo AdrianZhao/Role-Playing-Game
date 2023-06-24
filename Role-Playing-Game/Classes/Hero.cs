@@ -19,8 +19,9 @@ namespace Role_Playing_Game.Classes
             bool isName = false;
             while (!isName)
             {
+                Console.Write("Enter your hero name (3 to 20 characters): ");
                 string name = Console.ReadLine();
-                if (name.Length > 3 && name.Length < 20)
+                if (!String.IsNullOrEmpty(name) && name.Length >= 3 && name.Length <= 20)
                 {
                     isName = true;
                     _name = name;
@@ -66,9 +67,35 @@ namespace Role_Playing_Game.Classes
             {
                 _currentHealth = currentHealth;
             }
+            else if (currentHealth + _currentHealth > OriginalHealth)
+            {
+                _currentHealth = OriginalHealth;
+            }
             else
             {
                 _currentHealth = 0;
+            }
+        }
+        public void AddBaseStrength(int baseStrength)
+        {
+            if (baseStrength > 0)
+            {
+                _baseStrength += baseStrength;
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException(nameof(baseStrength), "You have to put a proper value to add strength.");
+            }
+        }
+        public void AddBaseDefence(int baseDefence)
+        {
+            if (baseDefence > 0)
+            {
+                _baseDefence += baseDefence;
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException(nameof(baseDefence), "You have to put a proper value to add strength.");
             }
         }
         private WeaponAndArmour _weapon;

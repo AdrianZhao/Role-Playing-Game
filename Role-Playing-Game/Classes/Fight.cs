@@ -21,11 +21,11 @@ namespace Role_Playing_Game.Classes
         {
             _monster = monster;
         }
-        public int HeroTurn(Hero hero, Monster monster)
+        public int HeroTurn()
         {
-            int strength = hero.BaseStrength;
-            int defence = monster.BaseDefence;
-            int weaponDamage = hero.Weapon.Value;
+            int strength = _hero.BaseStrength;
+            int defence = _monster.BaseDefence;
+            int weaponDamage = _hero.Weapon.Value;
             int attackDamage = strength + weaponDamage - defence;
             if (attackDamage >= 0)
             {
@@ -33,11 +33,11 @@ namespace Role_Playing_Game.Classes
             }
             return 0;
         }
-        public int MonsterTurn(Hero hero, Monster monster)
+        public int MonsterTurn()
         {
-            int strength = monster.BaseStrength;
-            int defence = hero.BaseDefence;
-            int armourValue = hero.Armour.Value;
+            int strength = _monster.BaseStrength;
+            int defence = _hero.BaseDefence;
+            int armourValue = _hero.Armour.Value;
             int attackDamage = strength - defence - armourValue;
             if (attackDamage >= 0)
             {
@@ -45,62 +45,89 @@ namespace Role_Playing_Game.Classes
             }
             return 0;
         }
-        public bool Result(Hero hero, Monster monster)
+        public bool Result()
         {
             bool heroTurn = true;
             bool isWin = false;
-            while (hero.CurrentHealth > 0 && monster.CurrentHealth > 0)
+            bool isHeroDamage = false;
+            bool isMonsterDamage = false;
+            while (_hero.CurrentHealth > 0 && _monster.CurrentHealth > 0)
             {
                 if (heroTurn)
                 {
-                    int damageDealt = HeroTurn(hero, monster);
-                    if (monster.CurrentHealth - damageDealt > 0)
+                    int damageDealt = HeroTurn();
+                    if (damageDealt == 0)
                     {
-                        monster.SetCurrentHealth(monster.CurrentHealth - damageDealt);
-                        Console.WriteLine($"{hero.Name} did {damageDealt} damage to monster {monster.Name}, {monster.Name} still have {monster.CurrentHealth}hp left.");
+                        isHeroDamage = true;
+                    }
+                    if (_monster.CurrentHealth - damageDealt > 0)
+                    {
+                        _monster.SetCurrentHealth(_monster.CurrentHealth - damageDealt);
+                        Console.WriteLine($"{_hero.Name} did {damageDealt} damage to monster {_monster.Name}, {_monster.Name} still have {_monster.CurrentHealth}hp left.");
                     }
                     else
                     {
-                        Console.WriteLine($"{hero.Name} did {damageDealt} damage to monster {monster.Name}, {monster.Name} have no hp left.");
-                        monster.SetCurrentHealth(0);
-                        WinGame(hero, monster);
-                        hero.SetMoney(hero.Money + 10);
-                        hero.EarnMoney(10);
+                        Console.WriteLine($"{_hero.Name} did {damageDealt} damage to monster {_monster.Name}, {_monster.Name} have no hp left.");
+                        _monster.SetCurrentHealth(0);
+                        WinGame();
+                        _hero.SetMoney(_hero.Money + _monster.Gold);
+                        _hero.EarnMoney(_monster.Gold);
                         isWin = true;
                     }
                 }
                 else
                 {
-                    int damageDealt = MonsterTurn(hero, monster);
-                    if (hero.CurrentHealth - damageDealt > 0)
+                    int damageDealt = MonsterTurn();
+                    if (damageDealt == 0)
                     {
-                        hero.SetCurrentHealth(hero.CurrentHealth - damageDealt);
-                        Console.WriteLine($"Monster {monster.Name} did {damageDealt} damage to {hero.Name}, {hero.Name} still have {hero.CurrentHealth}hp left.");
+                        isMonsterDamage = true;
+                    }
+                    if (_hero.CurrentHealth - damageDealt > 0)
+                    {
+                        _hero.SetCurrentHealth(_hero.CurrentHealth - damageDealt);
+                        Console.WriteLine($"Monster {_monster.Name} did {damageDealt} damage to {_hero.Name}, {_hero.Name} still have {_hero.CurrentHealth}hp left.");
                     }
                     else
                     {
-                        Console.WriteLine($"Monster {monster.Name} did {damageDealt} damage to {hero.Name}, {hero.Name} have no hp left.");
-                        hero.SetCurrentHealth(0);
-                        LoseGame(hero, monster);
+                        Console.WriteLine($"Monster {_monster.Name} did {damageDealt} damage to {_hero.Name}, {_hero.Name} have no hp left.");
+                        _hero.SetCurrentHealth(0);
+                        LoseGame();
                     }
+                }
+                if (isHeroDamage && isMonsterDamage)
+                {
+                    EvenGame();
+                    return true;
                 }
                 heroTurn = !heroTurn;
             }
             return isWin;
         }
-        public void WinGame(Hero hero, Monster monster)
+        public void WinGame()
         {
             Console.WriteLine();
             Console.WriteLine("Fight result:");
-            Console.WriteLine($"You, {hero.Name} have defeat the monster {monster.Name}. Congratulations!");
-            hero.FightsWon();
+            Console.WriteLine($"You, {_hero.Name} have defeat the monster {_monster.Name}. Congratulations!");
+            _hero.FightsWon();
         }
-        public void LoseGame(Hero hero, Monster monster)
+        public void LoseGame()
         {
             Console.WriteLine();
             Console.WriteLine("Fight result:");
-            Console.WriteLine($"You, {hero.Name} have been defeated by the monster {monster.Name}.");
-            hero.FightsLost();
+            Console.WriteLine($"You, {_hero.Name} have been defeated by the monster {_monster.Name}.");
+            _hero.FightsLost();
+        }
+        public void EvenGame()
+        {
+            Console.WriteLine();
+            Console.WriteLine("Fight result:");
+            Console.WriteLine($"You, {_hero.Name} did 0 damage to {_monster.Name}. And monster {_monster.Name} did 0 damage to {_hero.Name}. You win the lottery! {_monster.Name} has defeated and here is $100 reward!");
+            _hero.FightsWon();
+        }
+        public Fight(Hero hero, Monster monster)
+        {
+            SetHero(hero);
+            SetMonster(monster);
         }
     }
 }

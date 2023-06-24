@@ -12,7 +12,7 @@ namespace Role_Playing_Game.Classes
         public string Name { get { return _name; } }
         public void SetName(string name)
         {
-            if (name.Length > 3 && name.Length < 20)
+            if (name.Length >= 3 && name.Length <= 20)
             {
                 _name = name;
             }
@@ -29,7 +29,7 @@ namespace Role_Playing_Game.Classes
         public int OriginalHealth { get { return _originalHealth; } }
         private int _currentHealth;
         public int CurrentHealth { get { return _currentHealth; } }
-        private static int _gold = 5;
+        private static int _gold = 10;
         public int Gold { get { return _gold; } }
         public void SetCurrentHealth(int currentHealth)
         {
@@ -42,17 +42,19 @@ namespace Role_Playing_Game.Classes
                 _currentHealth = 0;
             }
         }
-        public Monster(string name, int baseStrength, int baseDefence, int originalHealth)
+        public void SetBaseStrength(int baseStrength)
         {
-            SetName(name);
             if (baseStrength > 0)
             {
                 _baseStrength = baseStrength;
             }
             else
             {
-                throw new ArgumentOutOfRangeException(nameof(baseStrength), "Your monster's base strenght is too low.");    
+                throw new ArgumentOutOfRangeException(nameof(baseStrength), "Your monster's base strenght is too low.");
             }
+        }
+        public void SetBaseDefence(int baseDefence)
+        {
             if (baseDefence > 0)
             {
                 _baseDefence = baseDefence;
@@ -61,7 +63,10 @@ namespace Role_Playing_Game.Classes
             {
                 throw new ArgumentOutOfRangeException(nameof(baseDefence), "Your monster's base defence is too low.");
             }
-            if (originalHealth > 4)
+        }
+        public void SetOriginalHealth(int originalHealth)
+        {
+            if (originalHealth > 0)
             {
                 _originalHealth = originalHealth;
             }
@@ -69,7 +74,14 @@ namespace Role_Playing_Game.Classes
             {
                 throw new ArgumentOutOfRangeException(nameof(originalHealth), "Your monster's original health is too low.");
             }
-            SetCurrentHealth(_originalHealth);
+        }
+        public Monster(string name, int baseStrength, int baseDefence, int originalHealth)
+        {
+            SetName(name);
+            SetBaseStrength(baseStrength);
+            SetBaseDefence(baseDefence);
+            SetOriginalHealth(originalHealth);
+            SetCurrentHealth(OriginalHealth);
         }
     }
 }

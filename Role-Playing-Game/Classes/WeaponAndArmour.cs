@@ -14,7 +14,7 @@ namespace Role_Playing_Game.Classes
         public int Value { get { return _value; } }
         private int _price;
         public int Price { get { return _price; } }
-        public WeaponAndArmour(string name, int value, int price)
+        public void SetName(string name)
         {
             if (!string.IsNullOrEmpty(name))
             {
@@ -24,6 +24,9 @@ namespace Role_Playing_Game.Classes
             {
                 throw new ArgumentNullException(nameof(name), "Weapon and Armour needs a proper name.");
             }
+        }
+        public void SetValue(int value)
+        {
             if (value >= 0)
             {
                 _value = value;
@@ -32,6 +35,9 @@ namespace Role_Playing_Game.Classes
             {
                 throw new ArgumentException(nameof(value), "The value needs to be a proper value.");
             }
+        }
+        public void SetPrice(int price)
+        {
             if (price >= 0)
             {
                 _price = price;
@@ -40,6 +46,12 @@ namespace Role_Playing_Game.Classes
             {
                 throw new ArgumentException(nameof(price), "The price needs to be a proper value.");
             }
+        }
+        public WeaponAndArmour(string name, int value, int price)
+        {
+            SetName(name);
+            SetValue(value);
+            SetPrice(price);
         }
     }
 }
