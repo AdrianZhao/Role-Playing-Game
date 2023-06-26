@@ -33,7 +33,7 @@ namespace Role_Playing_Game.Classes
         public int Gold { get { return _gold; } }
         public void SetCurrentHealth(int currentHealth)
         {
-            if (currentHealth >= 0 && currentHealth <= OriginalHealth)
+            if (currentHealth >= 0 && currentHealth + _currentHealth <= OriginalHealth)
             {
                 _currentHealth = currentHealth;
             }
