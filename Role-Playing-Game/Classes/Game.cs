@@ -70,7 +70,6 @@ namespace Role_Playing_Game.Classes
         {
             Console.WriteLine("Create your hero:");
             _hero = new Hero();
-            Console.WriteLine();
             Console.WriteLine($"Hero {_hero.Name} has been created!");
         }
         private void EquipHero()
@@ -181,6 +180,7 @@ namespace Role_Playing_Game.Classes
                 while (!isInput)
                 {
                     string temp = Console.ReadLine();
+                    Console.WriteLine();
                     if (string.IsNullOrEmpty(temp))
                     {
                         isExit = true;
@@ -199,6 +199,7 @@ namespace Role_Playing_Game.Classes
                             while (!isValidInput)
                             {
                                 string tempString = Console.ReadLine();
+                                Console.WriteLine();
                                 if (string.IsNullOrEmpty(tempString))
                                 {
                                     isExit = true;
@@ -240,6 +241,7 @@ namespace Role_Playing_Game.Classes
                             while (!isValidInput)
                             {
                                 string tempString = Console.ReadLine();
+                                Console.WriteLine();
                                 if (string.IsNullOrEmpty(tempString))
                                 {
                                     isExit = true;
@@ -347,8 +349,8 @@ namespace Role_Playing_Game.Classes
                 Console.WriteLine($"{_hero.Name} is Revivaled. Game restart.");
                 Console.WriteLine($"The monster has been reset.");
                 Console.WriteLine();
-                GetStatus();
             }
+            GetStatus();
             MainMenu();
         }
         private void IncreaseBaseStrength()
@@ -389,9 +391,18 @@ namespace Role_Playing_Game.Classes
         {
             if (_hero.Money >= 10)
             {
+                int tempCurrentHealth = _hero.CurrentHealth;
                 _hero.SetCurrentHealth(_hero.CurrentHealth + 10);
+                int difference = tempCurrentHealth - _hero.CurrentHealth;
+                if (difference > 10) 
+                {
+                    Console.WriteLine("Current Health increased by 10!");
+                }
+                else
+                {
+                    Console.WriteLine($"Current Health increased by {difference}!");
+                }
                 _hero.SetMoney(_hero.Money - 10);
-                Console.WriteLine("Current Health increased by 10!");
             }
             else
             {

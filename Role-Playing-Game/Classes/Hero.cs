@@ -21,6 +21,7 @@ namespace Role_Playing_Game.Classes
             {
                 Console.Write("Enter your hero name (3 to 20 characters): ");
                 string name = Console.ReadLine();
+                Console.WriteLine();
                 if (!String.IsNullOrEmpty(name) && name.Length >= 3 && name.Length <= 20)
                 {
                     isName = true;
@@ -63,11 +64,11 @@ namespace Role_Playing_Game.Classes
         }
         public void SetCurrentHealth(int currentHealth)
         {
-            if (currentHealth > 0 && currentHealth + _currentHealth < OriginalHealth) 
+            if (currentHealth > 0 && currentHealth <= OriginalHealth) 
             {
                 _currentHealth = currentHealth;
             }
-            else if (currentHealth > 0 && currentHealth + _currentHealth > OriginalHealth)
+            else if (currentHealth > 0 && currentHealth > OriginalHealth)
             {
                 _currentHealth = OriginalHealth;
             }
