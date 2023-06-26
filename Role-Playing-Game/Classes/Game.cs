@@ -56,7 +56,7 @@ namespace Role_Playing_Game.Classes
                 new WeaponAndArmour("Blue Wood Armour", 2, 0),
                 new WeaponAndArmour("Yellow Wood Armour", 2, 0)
             };
-            tempMonsters = _monsters;
+            tempMonsters = _monsters.ToHashSet();
         }
         public void StartGame()
         {

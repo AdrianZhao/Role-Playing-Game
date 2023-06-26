@@ -49,8 +49,8 @@ namespace Role_Playing_Game.Classes
         {
             bool heroTurn = true;
             bool isWin = false;
-            bool isHeroDamage = false;
-            bool isMonsterDamage = false;
+            bool isHeroDamageEqualsZero = false;
+            bool isMonsterDamageEqualsZero = false;
             while (_hero.CurrentHealth > 0 && _monster.CurrentHealth > 0)
             {
                 if (heroTurn)
@@ -58,7 +58,7 @@ namespace Role_Playing_Game.Classes
                     int damageDealt = HeroTurn();
                     if (damageDealt == 0)
                     {
-                        isHeroDamage = true;
+                        isHeroDamageEqualsZero = true;
                     }
                     if (_monster.CurrentHealth - damageDealt > 0)
                     {
@@ -80,7 +80,7 @@ namespace Role_Playing_Game.Classes
                     int damageDealt = MonsterTurn();
                     if (damageDealt == 0)
                     {
-                        isMonsterDamage = true;
+                        isMonsterDamageEqualsZero = true;
                     }
                     if (_hero.CurrentHealth - damageDealt > 0)
                     {
@@ -94,7 +94,7 @@ namespace Role_Playing_Game.Classes
                         LoseGame();
                     }
                 }
-                if (isHeroDamage && isMonsterDamage)
+                if (isHeroDamageEqualsZero && isMonsterDamageEqualsZero)
                 {
                     EvenGame();
                     return true;
