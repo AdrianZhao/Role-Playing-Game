@@ -63,11 +63,11 @@ namespace Role_Playing_Game.Classes
         }
         public void SetCurrentHealth(int currentHealth)
         {
-            if (currentHealth > 0 && currentHealth <= OriginalHealth) 
+            if (currentHealth > 0 && currentHealth + _currentHealth < OriginalHealth) 
             {
                 _currentHealth = currentHealth;
             }
-            else if (currentHealth + _currentHealth > OriginalHealth)
+            else if (currentHealth > 0 && currentHealth + _currentHealth > OriginalHealth)
             {
                 _currentHealth = OriginalHealth;
             }
